@@ -12,7 +12,9 @@ pri_p3 = 1
 
 #Variaveis globais
 tipo =1
+vez_fila=0
 ciclo=0
+teste_entrada = True
 #variaves confirmação
 #finalizados
 fim_p1 = False
@@ -27,9 +29,12 @@ i_p1 = 0
 i_p2 = 0
 i_p3 = 0
 #tempo de espera negativo
-espera_p1 = 0
-espera_p2 = 0
-espera_p3 = 0
+espera_p1 = False
+espera_p2 = False
+espera_p3 = False
+tm_esperap1 =0
+tm_esperap2 =0
+tm_esperap3 =0
 #soma do vetor
 soma_p1=0
 soma_p2=0
@@ -58,6 +63,7 @@ def menor(valor1, valor2):
 def mudar_processo(qual):
   
   fila =''
+#Se o tipo for FIFO  ordena a fila
   if tipo ==1:
     if qual == 'inicio':
        fila = 'p1'
@@ -80,7 +86,8 @@ def mudar_processo(qual):
        fila= 'p2'
     return fila
     
-  elif tipo == 2:
+#Se o tipo for SJF  ordena a fila
+  elif tipo == 2:    
     if qual == "inicio":
       if soma_p1 < soma_p2:
         if pri_p1 < soma_p3:
@@ -93,47 +100,45 @@ def mudar_processo(qual):
         else:
           fila= "p3"
     if qual == "p1":
-      menor(soma_p2,soma_p3)
       res = menor(soma_p2,soma_p3)
       if res == True:
-        if fim_p2 == False:
+        if fim_p2 == False and espera_p2 == False:
           fila = "p2"
-        elif fim_p3 == False:
+        elif fim_p3 == False and espera_p3 == False:
           fila= "p3"
       else:
-        if fim_p3 == False:
+        if fim_p3 == False and espera_p3 == False:
           fila = "p3"
-        elif fim_p2 == False:
+        elif fim_p2 == False and espera_p2 == False:
           fila= "p2"    
     elif qual == "p2":
-      menor(soma_p1,soma_p3)
       res = menor(soma_p1,soma_p3)
       if res == True:
-        if fim_p1 == False:
+        if fim_p1 == False and espera_p1 == False:
           fila = "p1"
-        elif fim_p3 == False:
+        elif fim_p3 == False and espera_p3 == False:
           fila= "p3"
       else:
-        if fim_p3 == False:
+        if fim_p3 == False and espera_p3 == False:
           fila = "p3"
-        elif fim_p1 == False:
+        elif fim_p1 == False and espera_p1 == False:
           fila= "p1"   
           
     elif qual == "p3":
-      menor(soma_p1,soma_p2)
       res = menor(soma_p1,soma_p2)
       if res == True:
-        if fim_p1 == False :
+        if fim_p1 == False and espera_p1 == False:
           fila = "p1"
-        elif fim_p2 == False:
+        elif fim_p2 == False and espera_p2 == False:
           fila= "p2"
       else:
-        if fim_p2 == False:
+        if fim_p2 == False and espera_p2 == False:
           fila = "p2"
-        elif fim_p1 == False:
+        elif fim_p1 == False and espera_p1 == False:
           fila= "p1"   
     return fila
-
+    
+#Se o tipo for prioridade  ordena a fila
   elif tipo == 3:
     if qual == "inicio":
       if pri_p1 < pri_p2:
@@ -148,55 +153,74 @@ def mudar_processo(qual):
           fila= "p3"
  
     if qual == "p1":
-      menor(pri_p2,pri_p3)
       res = menor(pri_p2,pri_p3)
-
       if res == True:
-        if fim_p2 == False:
+        if fim_p2 == False and espera_p2 == False:
           fila = "p2"
-        elif fim_p3 == False:
+        elif fim_p3 == False and espera_p3 == False:
           fila= "p3"
       else:
-        if fim_p3 == False:
+        if fim_p3 == False and espera_p3 == False:
           fila = "p3"
-        elif fim_p2 == False:
+        elif fim_p2 == False and espera_p2 == False:
           fila= "p2"    
 
     elif qual == "p2":
-      menor(pri_p1,pri_p3)
       res = menor(pri_p1,pri_p3)
-
       if res == True:
-        if fim_p1 == False:
+        if fim_p1 == False and espera_p1 == False:
           fila = "p1"
-        elif fim_p3 == False:
+        elif fim_p3 == False and espera_p3 == False:
           fila= "p3"
       else:
-        if fim_p3 == False:
+        if fim_p3 == False and espera_p3 == False:
           fila = "p3"
-        elif fim_p1 == False:
+        elif fim_p1 == False and espera_p1 == False:
           fila= "p1"   
           
     elif qual == "p3":
-      
-      menor(pri_p1,pri_p2)
       res = menor(pri_p1,pri_p2)
       if res == True:
-        if fim_p1 == False:
+        if fim_p1 == False and espera_p1 == False:
           fila = "p1"
-        elif fim_p2 == False:
+        elif fim_p2 == False and espera_p2 == False:
           fila= "p2"
       else:
-        if fim_p2 == False:
+        if fim_p2 == False and espera_p2 == False:
           fila = "p2"
-        elif fim_p1 == False:
+        elif fim_p1 == False and espera_p1 == False:
           fila= "p1"   
     return fila
+    
+def verificar(v1,v2,v3):
+  res= "Ø"
+  if v1 == True and res.find('P1') == -1:
+    res +=' P1'
+    res=res.replace('Ø','')
+  if v2 == True and res.find('P2') == -1:
+    res += ' P2'
+    res=res.replace('Ø','')
+  if v3 == True and res.find('P3') == -1:
+    res += ' P3'
+    res=res.replace('Ø','')
+  return res
 """--------------inicio-----------------------------------------"""
-tipo = int(input('Digite 1 para fifo, 2 para sjf ou 3 para Prioridade: '))
+print('Entradas:')
+print('P1',p1,'Prioridade:',pri_p1)
+print('P2',p2,'Prioridade:',pri_p2)
+print('P3',p3,'Prioridade:',pri_p3)
+print()
+while teste_entrada:
+  tipo = str(input('Digite 1 para fifo, 2 para sjf ou 3 para Prioridade: '))
+  if tipo == '1' or tipo == '2' or tipo == '3':
+    teste_entrada= False
+  else:
+    print('Digite apenas 1,2 ou 3')
+tipo = int(tipo)
 """---------------------------------------------------------"""
-mudar_processo('inicio')
+
 fila= mudar_processo('inicio')
+#Fazer o tratamento de quem é a vez
 while all([fim_p1, fim_p2, fim_p3]) == False :
   if fila == 'p1':
     fila_p1= True
@@ -210,124 +234,163 @@ while all([fim_p1, fim_p2, fim_p3]) == False :
     fila_p3= True
     fila_p2 =False
     fila_p1 =False
-  if all([fim_p2,fim_p3]):
-    espera_p1=0
-  if all([fim_p1,fim_p3]):
-    espera_p2=0
-  if all([fim_p1,fim_p2]):
-    espera_p3=0
+
+  #Entrar na fila
+  if all([fim_p1,fim_p2,fim_p3])== False:
+    if vez_fila%3==0:
+      if tm_esperap1 == 0:
+        espera_p1 = False
+      if tm_esperap2 == 0:
+        espera_p2 = False
+      if tm_esperap3 == 0:
+        espera_p3 = False
+      vez_fila =0
+  if any([fim_p1,fim_p2,fim_p3]):
+    espera_p2 = False
+    espera_p3 = False
+    espera_p1 = False
   """----------------------------------------------------------------"""
-  #testar p1
+  #Processo para testar p1
   if fila_p1 == True and fim_p1 == False:
+    vez_fila +=1
     while i_p1 < len(p1):
-        print('------------')
+        print('---------------------------------------')
         print('Ciclo: ',ciclo)
+        print('Aguardadando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
+        print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
+        print('Em espera:',verificar(tm_esperap1 >0,tm_esperap2 >0,tm_esperap3 >0))
         print('Processo P1')
         vl= p1[i_p1]
         i_p1 += 1
-        comparador(vl)
         sair = comparador(vl)
         if sair:
           print('Em Espera')
           print('Espera de: ',vl,'Unidade de tempo')
-          espera_p1 -= vl
-          mudar_processo('p1')
+          espera_p1 = True
+          tm_esperap1 -= vl
+          if vez_fila%3==0:
+            espera_p2 = False
+            espera_p3 = False
           fila =mudar_processo('p1')
           ciclo +=1
+          sleep(1)
           break 
         else:
-          if espera_p2 >= vl:
-            espera_p2 -= vl
+          if tm_esperap2 >= vl:
+            tm_esperap2 -= vl
           else:
-            espera_p2 =0
+            tm_esperap2 =0
             
-          if espera_p3 >= vl:
-            espera_p3 -= vl
+          if tm_esperap3 >= vl:
+            tm_esperap3 -= vl
           else:
-            espera_p3 =0
+            tm_esperap3 =0
           print('CPU',vl,'Unidade de tempo')
           ciclo +=1
+          sleep(1)
     
     if i_p1 == len(p1):
       fim_p1 = True
+      print('***********************')
       print("P1 Finalizado")
-      mudar_processo('p1')
+      print('***********************')
       fila =mudar_processo('p1')
     
     """----------------------------------------------------------------"""
-    #testar p2
+  #Processo para testar p2
   elif fila_p2 == True and fim_p2 == False:
+     vez_fila +=1
      while i_p2 < len(p2):
-      
-        print('------------')
+        
+        print('---------------------------------------')
         print('Ciclo: ',ciclo)
+        print('Aguardadando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
+        print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
+        print('Em espera:',verificar(tm_esperap1 >0,tm_esperap2 >0,tm_esperap3 >0))
         print('Processo P2')
         vl= p2[i_p2]
         i_p2 += 1
-        comparador(vl)
         sair = comparador(vl)
         if sair:
           print('Em Espera')
           print('Espera de: ',vl,'Unidade de tempo')
-          espera_p2 -= vl
-          mudar_processo('p2')
+          espera_p2 = True
+          tm_esperap2 -= vl
+          if vez_fila%3==0:
+            espera_p1 = False
+            espera_p3 = False
           fila =mudar_processo('p2')
           ciclo +=1
+          sleep(1)
           break 
         else:
-          if espera_p1 >= vl:
-            espera_p1 -= vl
+          if tm_esperap1 >= vl:
+            tm_esperap1 -= vl
           else:
-            espera_p1 =0
+            tm_esperap1 =0
             
-          if espera_p2 >= vl:
-            espera_p2 -= vl
+          if tm_esperap3 >= vl:
+            tm_esperap3 -= vl
           else:
-            espera_p2 =0
+            tm_esperap3 =0
           ciclo +=1
           print('CPU',vl,'Unidade de tempo')
+          sleep(1)
     
      if i_p2 == len(p2):
        fim_p2 = True
+       print('***********************')
        print("P2 Finalizado")
-       mudar_processo('p2')
+       print('***********************')
        fila =mudar_processo('p2')
+       
        """-------------------------------------------------"""    
-    #testar p3
+  #Processo para testar p3
   elif fila_p3 == True and fim_p3 == False:
+    vez_fila +=1
     while i_p3 < len(p3):
-        print('------------')
+        vez_fila +=1
+        print('---------------------------------------')
         print('Ciclo: ',ciclo)
+        print('Aguardadando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
+        print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
+        print('Em espera:',verificar(tm_esperap1 >0,tm_esperap2 >0,tm_esperap3 >0))
         print('Processo P3')
         vl= p3[i_p3]
         i_p3 += 1
-        comparador(vl)
         sair = comparador(vl)
         if sair:
           print('Em Espera')
           print('Espera de: ',vl,'Unidade de tempo')
-          espera_p3 -= vl
-          mudar_processo('p3')
+          espera_p3 = True
+          tm_esperap3 -= vl
+          if vez_fila%3==0:
+            espera_p2 = False
+            espera_p1 = False
           fila =mudar_processo('p3')
           ciclo +=1
+          sleep(1)
           break 
         else:
-          if espera_p1 >= vl:
-            espera_p1 -= vl
+          if tm_esperap1 >= vl:
+            tm_esperap1 -= vl
           else:
-            espera_p1 =0
+            tm_esperap1 =0
             
-          if espera_p2 >= vl:
-            espera_p2 -= vl
+          if tm_esperap2 >= vl:
+            tm_esperap2 -= vl
           else:
-            espera_p2 =0
+            tm_esperap2 =0
           ciclo+=1
           print('CPU',vl,'Unidade de tempo')
-
-
+          sleep(1)
     if i_p3 == len(p3):
        fim_p3 = True
+       print('***********************')
        print("P3 Finalizado")
-       mudar_processo('p3')
+       print('***********************')
        fila =mudar_processo('p3')
-  sleep(1)
+  
+print()
+print("---------")
+print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
