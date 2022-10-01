@@ -13,7 +13,7 @@ pri_p3 = 1
 #Variaveis globais
 tipo =1
 vez_fila=0
-ciclo=0
+ciclo=1
 teste_entrada = True
 #variaves confirmação
 #finalizados
@@ -204,14 +204,14 @@ def verificar(v1,v2,v3):
     res += ' P3'
     res=res.replace('Ø','')
   return res
-"""--------------inicio-----------------------------------------"""
+"""--------------------inicio-----------------------------------------"""
 print('Entradas:')
 print('P1',p1,'Prioridade:',pri_p1)
 print('P2',p2,'Prioridade:',pri_p2)
 print('P3',p3,'Prioridade:',pri_p3)
 print()
 while teste_entrada:
-  tipo = str(input('Digite 1 para fifo, 2 para sjf ou 3 para Prioridade: '))
+  tipo = str(input('Digite 1 para FIFO, 2 para SJF ou 3 para Prioridade: '))
   if tipo == '1' or tipo == '2' or tipo == '3':
     teste_entrada= False
   else:
@@ -249,6 +249,8 @@ while all([fim_p1, fim_p2, fim_p3]) == False :
     espera_p2 = False
     espera_p3 = False
     espera_p1 = False
+
+    
   """----------------------------------------------------------------"""
   #Processo para testar p1
   if fila_p1 == True and fim_p1 == False:
@@ -256,7 +258,7 @@ while all([fim_p1, fim_p2, fim_p3]) == False :
     while i_p1 < len(p1):
         print('---------------------------------------')
         print('Ciclo: ',ciclo)
-        print('Aguardadando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
+        print('Aguardando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
         print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
         print('Em espera:',verificar(tm_esperap1 >0,tm_esperap2 >0,tm_esperap3 >0))
         print('Processo P1')
@@ -304,7 +306,7 @@ while all([fim_p1, fim_p2, fim_p3]) == False :
         
         print('---------------------------------------')
         print('Ciclo: ',ciclo)
-        print('Aguardadando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
+        print('Aguardando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
         print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
         print('Em espera:',verificar(tm_esperap1 >0,tm_esperap2 >0,tm_esperap3 >0))
         print('Processo P2')
@@ -352,7 +354,7 @@ while all([fim_p1, fim_p2, fim_p3]) == False :
         vez_fila +=1
         print('---------------------------------------')
         print('Ciclo: ',ciclo)
-        print('Aguardadando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
+        print('Aguardando:',verificar(fim_p1==False and fila_p1 ==False, fim_p2==False and fila_p2 ==False,fim_p3==False and fila_p3 ==False))
         print('Finalizados:',verificar(fim_p1,fim_p2,fim_p3))
         print('Em espera:',verificar(tm_esperap1 >0,tm_esperap2 >0,tm_esperap3 >0))
         print('Processo P3')
